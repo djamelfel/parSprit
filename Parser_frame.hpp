@@ -61,19 +61,16 @@ namespace parser
 	 */
 	bool parse_first_line(Iterator first, Iterator last, int &nodeQty)
 	{
-		//using qi::char_;
 		using qi::int_;
         using qi::phrase_parse;
 	    using qi::_1;
+	    using qi::lit;
         using ascii::space;
 		
         bool r = phrase_parse(
 							  first,                          /* itérateur début */
 							  last,                           /* itérateur fin */
-							  (
-							   "Ordre" >> int_[phoenix::ref(nodeQty)=_1]
-							   ),						/* Syntaxe de la ligne : 'Ordre' int
-														 */
+							  ( (lit("o") | lit("O")) >> "rdre" >> int_[phoenix::ref(nodeQty)=_1] ),		/* Syntaxe de la ligne : "ordre" int */
 							  space                           /* on ignore les espaces */
 							  );
         if (first != last) /* échec si la syntaxe n'est pas respectée */

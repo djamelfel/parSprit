@@ -34,13 +34,13 @@ int main(int __argc, char** __argv) {
 	/* première ligne */
 	if(getline(is, str)) {
 		if (parser::parse_first_line(str.begin(), str.end(), nodeNumber)) {
-			std::cout << "Parsing succeeded\n";
+			std::cout << "Parsing succeeded" << std::endl;
 			std::cout << "Ordre du graphe: " << nodeNumber << std::endl;
 		}
 		else {
-			std::cout << "-------------------------\n";
-            std::cout << "Syntax error, parsing failed\n";
-            std::cout << "-------------------------\n";
+			std::cout << "-------------------------" << std::endl;
+            std::cout << "Syntax error, parsing failed" << std::endl;
+            std::cout << "-------------------------" << std::endl;
 			return EXIT_FAILURE;
 		}
 	}
@@ -52,8 +52,8 @@ int main(int __argc, char** __argv) {
 	/* lecture du reste du fichier */
     while (getline(is, str)) {
 		/* si on va au-delà du nombre de noeuds déclarés... */
-		if(i++>nodeNumber) {
-			std::cout << "Incorrect number of nodes\n";
+		if( i++ > nodeNumber) {
+			std::cout << "Incorrect number of nodes" << std::endl;
 			return EXIT_FAILURE;
 		}
 		
@@ -72,35 +72,35 @@ int main(int __argc, char** __argv) {
 		if (parser::parse_frame_line(str.begin(), str.end(), node, floor_1, floor_2))
         {
 			/* messages pour debug... */
-            std::cout << "Parsing succeeded\n";
+            //std::cout << "Parsing succeeded\n";
 			
 			/* insertion des données dans la structure Frame */
 			if(floor_1.size() == 0) {
-				std::cout << "myCharp.addForbidden(1," << node << ",1,NULL)\n";
+				std::cout << "myCharp.addForbidden(1," << node << ",1,NULL)" << std::endl;
 				myCharp.addForbidden(1, node, 1, NULL);
 			}
 			for(int forbidden : floor_1) {
-				std::cout << "myCharp.addForbidden(1," << node << ",1," << forbidden << ")\n";
+				std::cout << "myCharp.addForbidden(1," << node << ",1," << forbidden << ")" << std::endl;
 				myCharp.addForbidden(1, node, 1, forbidden);
 			}
 			for(int forbidden : floor_2) {
-				std::cout << "myCharp.addForbidden(1," << node << ",2," << forbidden << ")\n";
+				std::cout << "\tmyCharp.addForbidden(1," << node << ",2," << forbidden << ")" << std::endl;
 				myCharp.addForbidden(1, node, 2, forbidden);
 			}
         }
         else /* erreur de syntaxe dans le fichier */
         {
-            std::cout << "-------------------------\n";
-            std::cout << "Syntax error, parsing failed\n";
-            std::cout << "-------------------------\n";
+            std::cout << "-------------------------" << std::endl;
+            std::cout << "Syntax error, parsing failed" << std::endl;
+            std::cout << "-------------------------" << std::endl;
 			return EXIT_FAILURE;
         }
-		
+		std::cout << std::endl;
     }
 	
-	/* nombre de noeuds déclaré supérieur au nombre de noeuds décrits... */
+	/* nombre de noeuds décrits inférieur au nombre de noeuds déclaré... */
 	if(i<nodeNumber) {
-		std::cout << "Incorrect number of nodes\n";
+		std::cout << "Incorrect number of nodes" << std::endl;
 		return EXIT_FAILURE;
 	}
 	

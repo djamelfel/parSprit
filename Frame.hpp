@@ -25,8 +25,7 @@ namespace frame
 		 Chaque étage contient les sommets interdits pour le sommet associé.
 		 (le sommet associé via la map vertexCharpMap)
 		 */
-		struct forbidden
-		{
+		struct forbidden {
 			std::unordered_set<int> stage1;
 			std::unordered_set<int> stage2;
 		};
@@ -34,17 +33,18 @@ namespace frame
 		/**
 		 forbiddenColumnMap associe une map de a un entier représentant la classe d'interdit
 		 */
-		std::unordered_map<unsigned, std::unordered_map<unsigned, forbidden>> forbiddenColumnMap;
+		std::unordered_map<unsigned, std::unordered_map<unsigned, forbidden> > forbiddenColumnMap;
+		
+		/**
+		 */
 		unsigned generalColumnKey;
 		
 	public:
-		Frame(unsigned size) : generalColumnKey(2), nbVertices(size)
-		{
+		Frame(unsigned size) : generalColumnKey(2), nbVertices(size) {
 		}
 		
 		
-		~Frame(void)
-		{
+		~Frame(void) {
 		}
 		
 		/**
@@ -54,17 +54,14 @@ namespace frame
 		 vertex: le sommet à ajouter dans le set d'interdit
 		 stage: l'étage dans lequel enregistrer le sommet.
 		 */
-		void addForbidden(unsigned column, unsigned refVertex, unsigned stage, int vertex)
-		{
-			try
-			{
+		void addForbidden(unsigned column, unsigned refVertex, unsigned stage, int vertex) {
+			try {
 				//recherche de la colonne
 				std::unordered_map<unsigned, std::unordered_map<unsigned, forbidden>>::iterator itMap1;
 				itMap1 = forbiddenColumnMap.find(column);
 				
 				//Si it == a forbiddenColumnMap.end() alors l'élément n'a pas été trouver dans la map
-				if(itMap1 == forbiddenColumnMap.end())
-				{
+				if(itMap1 == forbiddenColumnMap.end() ) {
 					//déclaration de la map de second niveau
 					std::unordered_map<unsigned, forbidden> vertexCharpMap(nbVertices);
 					
@@ -349,62 +346,51 @@ namespace frame
 		/**
 		 Execute l'algorithme
 		 */
-		void treatment(void)
-		{
+		void treatment(void) {
 			std::unordered_map<unsigned, std::unordered_map<unsigned, forbidden>>::iterator itMap1;
 			std::unordered_map<unsigned, std::unordered_map<unsigned, forbidden>>::iterator itMap1End;
-			
 			
 			std::unordered_map<unsigned, forbidden>::iterator itMap2;
 			std::unordered_map<unsigned, forbidden>::iterator itMap2End;
 			
 			itMap1End = forbiddenColumnMap.end();
 			//Parcours des colonnes
-			for(itMap1 = forbiddenColumnMap.begin(); itMap1 != itMap1End; itMap1 ++)
-			{
+			for(itMap1 = forbiddenColumnMap.begin(); itMap1 != itMap1End; itMap1 ++) {
 				printTable();
 				std::cout << std::endl;
 				itMap2End = (*itMap1).second.end();
 				//Parcours des lignes (sommets)
-				for(itMap2 = (*itMap1).second.begin(); itMap2 != itMap2End; itMap2++)
-				{
+				for(itMap2 = (*itMap1).second.begin(); itMap2 != itMap2End; itMap2++) {
 					//si l'étage 2 du sommet n'est pas vide
-					if(!(*itMap2).second.stage2.empty())
-					{
+					if(!(*itMap2).second.stage2.empty()) {
 						verTreatment((*itMap1).second, (*itMap2).second, itMap1End, (*itMap2).first);
 					}
 				}
 			}
-			
 		}
 		
 		
 		/**
 		 Print le tableau
 		 */
-		void printTable(void)
-		{
+		void printTable(void) {
 			std::unordered_map<unsigned, std::unordered_map<unsigned, forbidden>>::iterator itMap1;
 			std::unordered_map<unsigned, forbidden>::iterator itMap2;
 			std::unordered_set<int>::iterator itSet;
 			
-			for(itMap1 = forbiddenColumnMap.begin(); itMap1 != forbiddenColumnMap.end(); itMap1++)
-			{
+			for(itMap1 = forbiddenColumnMap.begin(); itMap1 != forbiddenColumnMap.end(); itMap1++) {
 				std::cout << "col n " << (*itMap1).first << " ";
-				for(itMap2 = (*itMap1).second.begin(); itMap2 != (*itMap1).second.end(); itMap2++)
-				{
+				for(itMap2 = (*itMap1).second.begin(); itMap2 != (*itMap1).second.end(); itMap2++) {
 					std::cout << " " << (*itMap2).first;
 					
 					std::cout << "[";
-					for(itSet = (*itMap2).second.stage1.begin(); itSet != (*itMap2).second.stage1.end(); itSet++)
-					{
+					for(itSet = (*itMap2).second.stage1.begin(); itSet != (*itMap2).second.stage1.end(); itSet++) {
 						std::cout << " " << (*itSet);
 					}
 					std::cout << "]";
 					
 					std::cout << "[";
-					for(itSet = (*itMap2).second.stage2.begin(); itSet != (*itMap2).second.stage2.end(); itSet++)
-					{
+					for(itSet = (*itMap2).second.stage2.begin(); itSet != (*itMap2).second.stage2.end(); itSet++) {
 						std::cout << " " << (*itSet);
 					}
 					std::cout << "]";
