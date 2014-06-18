@@ -21,7 +21,6 @@ namespace parser
     namespace ascii = boost::spirit::ascii;
 	namespace phoenix = boost::phoenix;
 	
-    template <typename Iterator>
 	/**
 	 Permet de parser une ligne du fichier de charpente
 	 first: itérateur de début de la ligne
@@ -30,52 +29,51 @@ namespace parser
 	 floor_1: vecteur des interdits de bas étage
 	 floor_2: vecteur des interdits de haut étage
 	 */
-    bool parse_frame_line(Iterator first, Iterator last, int &node, std::vector<int> &floor_1, std::vector<int> &floor_2)
-    {
+	template <typename Iterator>
+    bool parse_ligne(Iterator debut, Iterator fin, int &noeud, std::vector<int> &etage1, std::vector<int> &etage2) {
         using qi::int_;
         using qi::phrase_parse;
 	    using qi::_1;
         using ascii::space;
 		
-        bool r = phrase_parse(
-							  first,                          /* itérateur début */
-							  last,                           /* itérateur fin */
+        bool resultat = phrase_parse(
+							  debut,                          /* itérateur début */
+							  fin,                           /* itérateur fin */
 							  (
-							   int_[phoenix::ref(node)=_1] >>
-							   '[' >> -(int_[phoenix::push_back(phoenix::ref(floor_1), _1)] % ',') >>
-							   ']' >> -('[' >> -(int_[phoenix::push_back(phoenix::ref(floor_2), _1)] % ',') >>
+							   int_[phoenix::ref(noeud)=_1] >>
+							   '[' >> -(int_[phoenix::push_back(phoenix::ref(etage1), _1)] % ',') >>
+							   ']' >> -('[' >> -(int_[phoenix::push_back(phoenix::ref(etage2), _1)] % ',') >>
 										']')
 							   ),						/* Syntaxe d'une ligne : int '[' int, int, ... ']' '[' int, int, ... ']'
 														 chaque liste d'entiers peut avoir de 0 à n membres
 														 la deuxième liste est facultative */
 							  space                           /* on ignore les espaces */
 							  );
-        if (first != last) /* échec si la syntaxe n'est pas respectée */
+        if (debut != fin) /* échec si la syntaxe n'est pas respectée */
             return false;
-        return r;
+        return resultat;
     }
 	
-	template <typename Iterator>
 	/**
 	 Permet de parser la premiere ligne di fichier de charpente
 	 */
-	bool parse_first_line(Iterator first, Iterator last, int &nodeQty)
-	{
+	template <typename Iterator>
+	bool parse_premiere_ligne(Iterator debut, Iterator fin, int &nbrNoeud) {
 		using qi::int_;
         using qi::phrase_parse;
 	    using qi::_1;
 	    using qi::lit;
         using ascii::space;
 		
-        bool r = phrase_parse(
-							  first,                          /* itérateur début */
-							  last,                           /* itérateur fin */
-							  ( (lit("o") | lit("O")) >> "rdre" >> int_[phoenix::ref(nodeQty)=_1] ),		/* Syntaxe de la ligne : "ordre" int */
+        bool resultat = phrase_parse(
+							  debut,                          /* itérateur début */
+							  fin,                           /* itérateur fin */
+							  ( (lit("o") | lit("O")) >> "rdre" >> int_[phoenix::ref(nbrNoeud)=_1] ),		/* Syntaxe de la ligne : "ordre" int */
 							  space                           /* on ignore les espaces */
 							  );
-        if (first != last) /* échec si la syntaxe n'est pas respectée */
+        if (debut != fin) /* échec si la syntaxe n'est pas respectée */
             return false;
-        return r;
+        return resultat;
     }
 }
 
