@@ -103,8 +103,9 @@ int main(int __argc, char** __argv) {
 	sysTime *= 1000;
 	myCharp.treatment();
 
-	cout << "Temps d'execution: " << setprecision(5) << (time(0)*1000) - sysTime << " ms"<< endl;
+	cout << "Solution : " << endl << endl;
 	myCharp.printTable();
+	cout << "Temps d'execution: " << setprecision(5) << (time(0)*1000) - sysTime << " ms"<< endl;
 	
 	return EXIT_SUCCESS;
 }
