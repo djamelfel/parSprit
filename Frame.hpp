@@ -263,6 +263,7 @@ class Frame {
 						//insertion du sommet dans la liste d'interdit de second niveau
 						column.at(elemSet1).etage2.insert(elemSet2);
 						
+						printTable();
 						verTreatment(column, column.at(elemSet1),itMap1End, elemSet1);
 						
 						//Insert la valeur de l'étage 2 dans l'étage 1
@@ -318,12 +319,15 @@ class Frame {
 			forbiddenColumnMap.erase(1);
 			forbiddenColumnMap.insert(newPairForMap1);
 			
+			/* affiche classe de base */
+			cout << endl << "Classe de base :" << endl;
+			printTable();
+			cout << endl;
+			
 			//Parcours des classes
 			for	(int i =0; i<4; i++)
 			for(itMap1 = forbiddenColumnMap.begin(); itMap1 != itMap1End; itMap1 ++) {
-				cout << endl << "Classe de base :" << endl;
-				printTable();
-				cout << endl;
+
 				itMap2End = itMap1->second.end();
 				//Parcours des lignes (sommets)
 				for(itMap2 = (*itMap1).second.begin(); itMap2 != itMap2End; itMap2++) {
